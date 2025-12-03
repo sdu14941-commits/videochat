@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meet Someone New - Final Responsive UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Define Color Variables and Base Settings */
+        :root {
+            --primary-purple: #9d3bff; 
+            --secondary-pink: #ff0073; 
+            --neon-green: #38c172; 
+            --dark-background: #0C001C; 
+            --card-surface: #1B0C30; 
+            font-size: 16px; 
+        }
+
+        /* Apply border-box globally for robust, responsive layout */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: white;
+            background-color: var(--dark-background); 
+            
+            /* --- Unique Textured Background (Scattered Glowing Dots) --- */
+            background-image: 
+                radial-gradient(circle, rgba(157, 59, 255, 0.2) 1px, transparent 0),
+                radial-gradient(circle, rgba(157, 59, 255, 0.2) 1px, transparent 0);
+            background-size: 50px 50px; 
+            background-position: 0 0, 25px 25px; 
+
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* App Container: Controls max width and responsive padding */
+        .app-container {
+            width: 100%;
+            max-width: 600px; 
+            padding: 5vw; 
+            box-sizing: border-box;
+        }
+
+        /* Main Content Title */
+        .content-block h1 {
+            font-size: 2.5rem; 
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px var(--primary-purple); 
+        }
+
+        .content-block p {
+            font-size: 1.1rem;
+            color: #d1c4e9;
+            margin-bottom: 2rem;
+        }
+        
+        /* User Grid Section */
+        .user-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4vw; 
+            margin-bottom: 3rem;
+        }
+
+        /* Card Styling with Responsive Height and Glowing Border */
+        .user-card {
+            position: relative;
+            height: 60vw; 
+            max-height: 280px; 
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: var(--card-surface);
+            
+            /* Glowing Border + Depth Shadow */
+            box-shadow: 
+                0 0 0 2px rgba(157, 59, 255, 0.5), 
+                0 15px 40px rgba(0, 0, 0, 0.7); 
+            transition: transform 0.2s;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 0 0 2px var(--primary-purple), 
+                0 20px 50px rgba(0, 0, 0, 0.9);
+        }
+
+        .user-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Info Overlay and Name/Status */
+        .info-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.8rem;
+            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-name {
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.2;
+            padding-left: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Glowing Status Dot (::before pseudo-element) */
+        .user-name::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background-color: var(--neon-green);
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 5px var(--neon-green), 0 0 10px var(--neon-green); 
+        }
+
+        /* Call Icon (Glowing Effect) */
+        .call-icon {
+            background-color: var(--neon-green);
+            width: 35px; 
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 5px;
+            box-shadow: 0 0 10px var(--neon-green), 0 4px 10px rgba(0, 0, 0, 0.4); 
+            transition: background 0.2s;
+        }
+        .call-icon i {
+            font-size: 1.1rem;
+            color: black;
+        }
+        
+        /* Primary Button (Vibrant and Robust) */
+        .main-button {
+            width: 100%;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 1rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: white;
+            background: linear-gradient(90deg, #ff0073 0%, #ff5277 50%, #ff8c00 100%); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(255, 0, 115, 0.6);
+            margin-bottom: 1rem; 
+            box-sizing: border-box; 
+            transition: all 0.2s;
+        }
+
+        .main-button i {
+            margin-left: 10px;
+        }
+
+        /* Secondary Buttons Container (Flexbox) */
+        .secondary-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            box-sizing: border-box; 
+        }
+
+        /* Secondary Button Style */
+        .secondary-button {
+            flex: 1;
+            padding: 1rem 0;
+            border: 2px solid rgba(157, 59, 255, 0.4);
+            border-radius: 1rem;
+            background-color: rgba(255, 255, 255, 0.05); 
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-sizing: border-box; 
+            transition: background 0.2s;
+        }
+
+        .secondary-button:hover {
+            background-color: rgba(157, 59, 255, 0.15);
+        }
+
+        /* Media Query for small mobile screens: Stack the secondary buttons */
+        @media (max-width: 480px) {
+            .secondary-buttons {
+                 flex-direction: column; 
+                 gap: 0.8rem;
+            }
+            .secondary-button {
+                 width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        
+        <div class="content-block">
+            <h1>Meet Someone New</h1>
+            <p>Make New Friends and Discover the World through Live Video Chat</p>
+        </div>
+
+        <div class="user-grid">
+            
+            <div class="user-card">
+                <img src="images/pic1.jpg" alt="Urwashi"> 
+                <div class="info-overlay">
+                    <span class="user-name">Urwashi 24</span>
+                    <div class="call-icon"><i class="fas fa-phone-alt"></i></div>
+                </div>
+            </div>
+
+            <div class="user-card">
+                <img src="images/pic2.jpg" alt="Priya">
+                <div class="info-overlay">
+                    <span class="user-name">Priya 22</span>
+                    <div class="call-icon"><i class="fas fa-phone-alt"></i></div>
+                </div>
+            </div>
+
+            <div class="user-card">
+                <img src="images/pic3.jpeg" alt="Zara">
+                <div class="info-overlay">
+                    <span class="user-name"> shilpa setthi</span>
+                    <div class="call-icon"><i class="fas fa-phone-alt"></i></div>
+                </div>
+            </div>
+
+            <div class="user-card">
+                <img src="images/pic4.jpeg" alt="Siya">
+                <div class="info-overlay">
+                    <span class="user-name">Siya 21</span>
+                    <div class="call-icon"><i class="fas fa-phone-alt"></i></div>
+                </div>
+            </div>
+            
+            <div class="user-card">
+                <img src="images/pic5.jpeg" alt="Ayesha">
+                <div class="info-overlay">
+                    <span class="user-name">Ayesha 25</span>
+                    <div class="call-icon"><i class="fas fa-phone-alt"></i></div>
+                </div>
+            </div>
+
+            <div class="user-card">
+                <img src="images/pic6.jpeg" alt="Riya">
+                <div class="info-overlay">
+                    <span class="user-name">Riya 26</span>
+                    <div class="call-icon"><i class="fas fa-phone-alt"></i></div>
+                </div>
+            </div>
+
+            <div class="user-card">
+                <img src="images/pic7.jpeg" alt="Sneha">
+                <div class="info-overlay">
+                    <span class="user-name">Sneha 20</span>
+                    <div class="call-icon"><i class="fas fa-phone-alt"></i></div>
+                </div>
+            </div>
+            
+            <div class="user-card">
+                <img src="images/pic8.jpeg" alt="Kavya">
+                <div class="info-overlay">
+                    <span class="user-name">Kavya 27</span>
+                    <div class="call-icon"><i class="fas fa-phone-alt"></i></div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <button class="main-button">
+            Start Video Chat 
+            <i class="fas fa-arrow-right"></i>
+        </button>
+
+        <div class="secondary-buttons">
+            <button class="secondary-button">
+                <i class="fas fa-download"></i>
+                Download App
+            </button>
+            <button class="secondary-button">
+                <i class="fas fa-video"></i>
+                Video Tutorial 
+            </button>
+        </div>
+        
+    </div>
+</body>
+</html>
+
